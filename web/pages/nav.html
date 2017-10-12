@@ -1,14 +1,102 @@
-<ul class="nav nav-tabs">
-	<li role="presentation" class="active"><a href="#">Home</a></li>
-	<li role="presentation"><a href="#">Profile</a></li>
-	<li role="presentation" class="dropdown"><a
-		class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-		aria-haspopup="true" aria-expanded="false"> Message <span
-			class="caret"></span>
-	</a>
-		<ul class="dropdown-menu">
-			<li role="presentation"><a href="#">News</a></li>
-			<li role="presentation"><a href="#">Sports</a></li>
-			<li role="presentation"><a href="#">Bagua</a></li>
-		</ul></li>
-</ul>
+<!-- 
+<nav>元素写导航  .navbar导航条 .navbar-default导航条默认样式  
+.navbar-fixed-top固定在顶部  .navbar-fixed-bottom固定在底部 .navbar-static-top 类即可创建一个与页面等宽度的导航条，它会随着页面向下滚动而消失 .navbar-static-bottom
+.navbar-inverse 反色的导航条
+-->
+
+<nav class="navbar navbar-default navbar-static-top navbar-inverse">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <!-- <button> 小屏幕显示该按钮，data-target点击按钮显示的菜单  data-toggle="collapse"可折叠-->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menuDiv" aria-expanded="false">
+        <!-- .sr-only是屏幕阅读器正常显示，其他设备上隐藏该元素，这个是用于帮助残障人士阅读的 -->
+        <span class="sr-only">Toggle navigation</span>
+        <!-- .icon-bar 短横线 -->
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- .navbar-brand品牌商标 -->
+      <a class="navbar-brand" href="#"><!-- <img src="images/logo-ui.png"/> --><!-- <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp; -->Brand</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <!-- .navbar-collapse 导航条小屏幕折叠 -->
+    <div class="collapse navbar-collapse" id="menuDiv">
+      <!-- .nav是导航的基类，导航组件都依赖同一个 .nav 类 -->
+      <ul class="nav navbar-nav">
+      	<!-- .active 激活 -->
+        <li id="firLink" onclick:="showView(1)" class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li id="secLink" onclick:="showView(2)"><a href="#">Link</a></li>
+        <!-- .dropdown下拉菜单 -->
+        <li id="thiLink" class="dropdown">
+          <!-- 
+          role是html5属性，转换角色使用，是方便障碍人士使用屏幕阅读器使用的
+		      Eg1:<div role="button"></div> ，把div元素转换为button按钮功能使用；
+			  Eg2:<div role="navigation"></div>，把div元素转换为navigation导航功能使用；
+			  Eg3:<div role="checkbox" aria-checked="checked"></div>，把div元素转换为checkbox复选框功能使用；
+			  Eg4:<a role="button" class="btn btn-default" href="#" >链接</a>，把a链接元素转换为button按钮功能使用。
+	      aria-* 描述tag在可视化的情境中的具体信息。
+			       以上checkbox辅助工具就会知道，这个div实际上是个checkbox的角色，为选中状态。
+			  aria-haspopup :true表示点击的时候会出现菜单或是浮动元素； false表示没有pop-up效果。 
+			  aria-expanded:表示展开状态。默认为undefined, 表示当前展开状态未知。其它可选值：true表示元素是展开的；false表示元素不是展开的。
+		  .caret 倒三角图标
+           -->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <!-- .dropdown-menu 下拉菜单项 -->
+          <ul class="dropdown-menu">
+            <li onclick:="showView(3)"><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <!-- .divider分隔线 -->
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- 
+      .navbar-form 将表单放置于 .navbar-form 之内可以呈现很好的垂直对齐，并在较窄的视口（viewport）中呈现折叠状态。 使用对齐选项可以规定其在导航条上出现的位置
+      .navbar-left 向左对齐  .navbar-right 向右对齐
+       -->
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+      </ul>
+    </div>
+</nav>
+<script>
+/* bootstrap提供的是静态导航(<a href="#id"></a> <div id="id"></div>  导航div元素写同一单页面使用show hidden实现导航响应) 
+ * 此处没有使用bootstrap，使用W.js动态加载  
+          需要：
+      1、为了便于获取对象为每一个导航项设置id属性      $('#id')，以下是其他方式获取对象
+	    $('[href="#profile"]') $('#myTabs a[href="#profile"]') $('#myTabs a:first') $('#myTabs a:last') $('#myTabs li:eq(2) a')
+ 
+	  2、
+*/ 
+function showView(view){
+	$('.active').removeClass('active');
+	switch(view){
+	case 1:
+	    $('#firLink').addClass('active');
+		W.open('pages/mainstay.html');
+		break;
+	case 2:
+		$('#secLink').addClass('active');
+		W.open('pages/mainstay.html');
+		break;	
+	case 3:
+		$('#thiLink').addClass('active');
+		W.open('pages/mainstay.html');
+		break;	
+	}
+	
+} 
+
+</script>

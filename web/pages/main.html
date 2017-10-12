@@ -1,11 +1,24 @@
+<!-- 
+Bootstrap需要为页面内容和栅格系统包裹一个 .container容器。我们提供了两个作此用处的类。注意，由于 padding 等属性的原因，这两种 容器类不能互相嵌套。
+.container类用于固定宽度并支持响应式布局的容器。
+.container-fluid类用于 100% 宽度，占据全部视口（viewport）的容器。 
+-->
 <div class="container">
 	<div class="main_header">
 	  <w href="pages/nav.html"> </w>
 	</div>
-	<div class="main_body"></div>
+	<div class="main_body">
+	   <w href:="main_body_div"> </w>
+	</div>
 </div>
 
 <script>
+var main_body_div;
+
+W.on('open',function(e){
+	main_body_div = e.detail.name;
+	e.stopPropagation();
+});
 
 
 </script>
