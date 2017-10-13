@@ -1,4 +1,4 @@
-package eye.restul;
+package eye.restul.scan;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,13 +14,21 @@ import java.util.jar.JarFile;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.objectweb.asm.ClassReader;
-
+/**
+ *浏览指定目录下所有的class文件（包括jar包的class文件）
+ */
 public class ClassPathScanner {
 	
 	private static final String CLASS_FILE_EXTENSION = ".class";
 	
 	private MultiMap data = new MultiValueMap();
 	
+	/**
+	 * 浏览实现，写入MultiValueMap
+	 * @param rootPaths new String[]{"com/aa","com/bb"}
+	 * @return
+	 * @throws Exception
+	 */
 	public MultiMap scan(String[] rootPaths) throws Exception {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		for (String path : rootPaths) {
