@@ -20,7 +20,7 @@ import org.objectweb.asm.ClassReader;
 public class ClassPathScanner {
 	
 	private static final String CLASS_FILE_EXTENSION = ".class";
-	
+	/** <注解全路径,多个clazz> */
 	private MultiMap data = new MultiValueMap();
 	
 	/**

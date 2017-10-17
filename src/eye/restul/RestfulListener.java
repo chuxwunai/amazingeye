@@ -15,6 +15,7 @@ import org.apache.commons.collections.MultiMap;
 import eye.restul.annotation.ClassPathScanFor;
 import eye.restul.scan.ClassPathScanListener;
 import eye.restul.scan.ClassPathScanner;
+import javassist.ClassPool;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.annotation.Annotation;
@@ -37,9 +38,30 @@ public class RestfulListener implements ServletContextListener {
 
 	private static Logger logger = Logger.getLogger(RestfulListener.class.getName());
 
+	/**
+	 * classPathScanResult={eye.restul.annotation.Path=[eye.demo.ServiceExt],
+	 * java.lang.annotation.Target=[eye.restul.annotation.Bean,
+	 * eye.restul.annotation.ClassPathScanFor, eye.restul.annotation.Delete,
+	 * eye.restul.annotation.Get, eye.restul.annotation.Path,
+	 * eye.restul.annotation.Post, eye.restul.annotation.Put,
+	 * eye.restul.annotation.Resource, eye.restul.scan.Order],
+	 * eye.restul.annotation.ClassPathScanFor=[eye.restul.scan.
+	 * ResourceScanListener],
+	 * java.lang.annotation.Retention=[eye.restul.annotation.Bean,
+	 * eye.restul.annotation.ClassPathScanFor, eye.restul.annotation.Delete,
+	 * eye.restul.annotation.Get, eye.restul.annotation.Path,
+	 * eye.restul.annotation.Post, eye.restul.annotation.Put,
+	 * eye.restul.annotation.Resource, eye.restul.scan.Order],
+	 * eye.restul.annotation.Resource=[eye.demo.ServiceExt],
+	 * eye.restul.annotation.Get=[eye.demo.ServiceExt]}
+	 */
 	private MultiMap classPathScanResult;
 
+	/** eye.restul.annotation.ClassPathScanFor  */
 	private final String classPathScanForClassName = ClassPathScanFor.class.getName();
+	
+	private ClassPool pool;
+	
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
@@ -47,14 +69,14 @@ public class RestfulListener implements ServletContextListener {
 		logger.info("开始类扫描");
 		long startAt = System.currentTimeMillis();
 		try {
-			classPathScanResult = new ClassPathScanner().scan(new String[] { "com/sihuatech", "com/onewaveinc" });
+			classPathScanResult = new ClassPathScanner().scan(new String[] { "eye"});
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "类扫描出错", e);
 			return;
 		}
 		logger.info("结束类扫描，耗时[" + (System.currentTimeMillis() - startAt) + "]毫秒");
 
-		/** 4. 处理其他类扫描监听器 */
+		/** 2. 处理类扫描监听器 */
 		Set<String> listeners = new HashSet<String>(
 				(Collection<String>) classPathScanResult.get(classPathScanForClassName));
 		for (String listener : listeners) {
@@ -63,13 +85,12 @@ public class RestfulListener implements ServletContextListener {
 
 		// 类扫描结果不再需要，释放掉
 		classPathScanResult = null;
-
 	}
 
 	private void processListener(String listener) {
 		try {
 			String classPathScanFor = null;
-
+			
 			ClassFile clazz = new ClassFile(false, listener, null);
 			AnnotationsAttribute annotations = (AnnotationsAttribute) clazz
 					.getAttribute(AnnotationsAttribute.visibleTag);
@@ -81,6 +102,7 @@ public class RestfulListener implements ServletContextListener {
 					break;
 				}
 			}
+			System.out.println("+==================="+classPathScanFor);
 
 			// 获取监听器类
 			Class<?> listenerClass = Thread.currentThread().getContextClassLoader().loadClass(listener);
