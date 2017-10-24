@@ -34,18 +34,6 @@ public class RouteRegistry {
 
 	private List<BitSet> segmentPatternBitsets;
 
-	private RouteRegistry() {
-		// 读取模块配置
-		Properties properties = new Properties();
-		try {
-			properties.load(this.getClass().getResourceAsStream("/bumblebee.properties"));
-		} catch (IOException e) {
-			logger.info("读取 bumblebee.properties 时出错");
-		}
-
-		routesSortEnabled = Boolean.parseBoolean(properties.getProperty("routes.sort.enabled"));
-	}
-
 	/**
 	 * 添加一条路由。由于添加路由后，内部用于匹配的路由位组需要被重新计算，因此这个操作相对耗时。尽量使用该方法的批量版本：
 	 * {@link #addAll(Collection)}

@@ -5,6 +5,17 @@
   <listener>
    <listener-class>eye.restul.RestfulListener</listener-class>
   </listener>
+  
+  <servlet>
+   <servlet-name>RestfulService</servlet-name>
+   <servlet-class>eye.restul.RestfulService</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+   <servlet-name>RestfulService</servlet-name>
+   <url-pattern>/rest/*</url-pattern>
+  </servlet-mapping>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

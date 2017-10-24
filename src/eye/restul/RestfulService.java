@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,16 +43,15 @@ public class RestfulService extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
+		super.init();
+
 		// 读取模块配置
 		Properties properties = new Properties();
-		try {
-			properties.load(this.getClass().getResourceAsStream("/bumblebee.properties"));
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "读取 bumblebee.properties 时出错", e);
-		}
-		gzipEnabled = Boolean.parseBoolean(properties.getProperty("gzip.enabled"));
-		gzipThreshold = Integer.parseInt(properties.getProperty("gzip.threshold"));
-
+//		try {
+////			properties.load(this.getClass().getResourceAsStream("config.properties"));
+//		} catch (IOException e) {
+//			logger.log(Level.SEVERE, "读取 bumblebee.properties 时出错", e);
+//		}
 		logger.info("初始化资源...");
 		if (ResourceScanListener.classes != null) {
 			try {
@@ -67,7 +67,6 @@ public class RestfulService extends HttpServlet {
 				throw new ServletException(e);
 			}
 		}
-
 	}
 
 	@Override
@@ -166,5 +165,6 @@ public class RestfulService extends HttpServlet {
 		}
 
 		RouteRegistry.instance().addAll(routes);
+		System.out.println("+++++++++++routes="+JSON.toJSONString(routes));
 	}
 }

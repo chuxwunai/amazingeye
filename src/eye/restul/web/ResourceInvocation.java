@@ -22,9 +22,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.ClassUtils;
 
+
 import eye.restul.scan.ObjectReference;
 import eye.restul.scan.QueryVariableMap;
 import eye.restul.scan.Route;
+import eye.restul.scan.RouteRegistry;
 import eye.restul.scan.Segment;
 import eye.restul.scan.StrongReference;
 
@@ -211,6 +213,16 @@ public class ResourceInvocation {
 
 	public Object invoke() throws Throwable {
 		try {
+			 // 对不支持的请求类型，返回 501
+	        if (!RestfulConstants.ALLOW_METHODS.contains(method)) {
+	            return error(HttpServletResponse.SC_NOT_IMPLEMENTED);
+	        }
+	        Route route = RouteRegistry.instance().find(method, path);
+	        if (route == null) {
+	            return error(HttpServletResponse.SC_NOT_FOUND);
+	        }
+	        setRoute(route);
+	        
 			Object resource = route.getResourceFactory().create();
 
 			Object[] parameters = getParameters();
