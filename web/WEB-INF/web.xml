@@ -3,12 +3,12 @@
   <display-name>amazingeye</display-name>
   
   <listener>
-   <listener-class>eye.restul.RestfulListener</listener-class>
+   <listener-class>eye.restul.entrance.RestfulListener</listener-class>
   </listener>
   
   <servlet>
    <servlet-name>RestfulService</servlet-name>
-   <servlet-class>eye.restul.RestfulService</servlet-class>
+   <servlet-class>eye.restul.entrance.RestfulService</servlet-class>
   </servlet>
   
   <servlet-mapping>

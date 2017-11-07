@@ -3,9 +3,11 @@ package eye.demo;
 import java.util.ArrayList;
 import java.util.List;
 
-import eye.restul.annotation.Get;
-import eye.restul.annotation.Path;
-import eye.restul.annotation.Resource;
+import eye.restul.server.annotation.Get;
+import eye.restul.server.annotation.Path;
+import eye.restul.server.annotation.Resource;
+
+
 
 @Resource("ext")
 public class ServiceExt {
@@ -19,18 +21,6 @@ public class ServiceExt {
 	@Path("path")
 	public void getByPath(){
 		System.out.println("ServiceExt path getByPath()");
-	}
-	
-	@Get
-	@Path("path/{a}/{b}")
-	public void getByPathParam(String a,Long b){
-		System.out.println("ServiceExt path getByPathParam()");
-		if(a instanceof String){
-			System.out.println("param a is String");
-		}
-		if(b instanceof Long){
-			System.out.println("param b is Long");
-		}
 	}
 	
 	@Get
