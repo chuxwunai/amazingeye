@@ -9,12 +9,20 @@
 </table>
 
 <table>
-
 <thead>
     <tr><th>顺序</th></tr>
 </thead>
 <tbody for:="paramValue of result">
     <tr><td>${paramValue}</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+    <tr><th>服务ID</th><th>服务名称</th></tr>
+</thead>
+<tbody for:="service of services">
+    <tr><td>${service.num}</td><td>${service.name}</td></tr>
 </tbody>
 </table>
 
@@ -24,6 +32,18 @@ var books = [
     { id: 2, name: '世界第一少年侦探团', author: '伊妮德布莱顿' },
     { id: 3, name: '互联网+', author: '刘润' }
 ]; 
-var result = yield W.get('ext/path/1/2');
+//get-->Get
+var result = yield W.get('ext/path/1/2'); 
 
+//post-->Post
+/* var serivceDemo = {name : 'name1'};
+var services = yield W.post('ext/service', serivceDemo); */
+
+//put-->Put
+/* var serivceDemo = {name : 'name1'};
+var services = yield W.put('ext/service', serivceDemo); */
+
+//del-->Delete
+var serivceDemo = {name : 'name1'};
+var services = yield W.del('ext/service', serivceDemo);
 </script>
