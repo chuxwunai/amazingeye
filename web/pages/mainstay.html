@@ -1,29 +1,45 @@
 <h1>mainstay</h1>
 <table>
-<thead>
-    <tr><th>名称</th><th>作者</th></tr>
-</thead>
-<tbody for:="book of books">
-    <tr><td>${book.name}</td><td>${book.author}</td></tr>
-</tbody>
+	<thead>
+		<tr>
+			<th>名称</th>
+			<th>作者</th>
+		</tr>
+	</thead>
+	<tbody for:="book of books">
+		<tr>
+			<td>${book.name}</td>
+			<td>${book.author}</td>
+		</tr>
+	</tbody>
 </table>
 
 <table>
-<thead>
-    <tr><th>顺序</th></tr>
-</thead>
-<tbody for:="paramValue of result">
-    <tr><td>${paramValue}</td></tr>
-</tbody>
+	<thead>
+		<tr>
+			<th>顺序</th>
+		</tr>
+	</thead>
+	<tbody for:="paramValue of result">
+		<tr>
+			<td>${paramValue}</td>
+		</tr>
+	</tbody>
 </table>
 
 <table>
-<thead>
-    <tr><th>服务ID</th><th>服务名称</th></tr>
-</thead>
-<tbody for:="service of services">
-    <tr><td>${service.num}</td><td>${service.name}</td></tr>
-</tbody>
+	<thead>
+		<tr>
+			<th>服务ID</th>
+			<th>服务名称</th>
+		</tr>
+	</thead>
+	<tbody for:="service of services">
+		<tr>
+			<td>${service.num}</td>
+			<td>${service.name}</td>
+		</tr>
+	</tbody>
 </table>
 
 <script>
