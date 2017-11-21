@@ -1,0 +1,208 @@
+
+<script type="text/javascript">
+	//兼容requestAnimFrame
+	window.requestAnimFrame = ( function() {
+		return window.requestAnimationFrame ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			function( callback ) {
+				window.setTimeout( callback, 1000 / 60 );
+			};
+	})();
+	//背景绘制函数
+	 function drawBg(cvs)
+      {
+      cvs.beginPath();
+	    cvs.fillStyle="#021120";
+	    cvs.fillRect(0,0,wW,wH);
+	    cvs.save();
+      }
+	//随机数0-255（rgb）
+	function ran255(){
+		return Math.round(Math.random()*255);
+	}
+	//随机颜色构造函数
+	function Color(){
+		this.r=ran255();
+		this.g=ran255();
+		this.b=ran255();
+		this.rgb="rgba("+this.r+","+this.g+","+this.b+",1)";
+	}
+	var wW,wH;
+      var can=document.getElementById("myCanvas");
+      var body = document.getElementsByTagName("body")[0];
+      can.width=wW=$(window).width();
+      can.height=wH=$(window).height();      
+      var cvs=can.getContext("2d");
+      //绘制背景     
+      drawBg(cvs);
+      //创建粒子配置（总体）,静态类
+      var Dots=
+      {
+      	n:45,
+        minDis:250,
+        d_mouse:300,
+      	array:[],
+      	radiusArr:[],
+      	colorArr:[],
+        maxDis:400,
+        mouse:{}
+      }
+      //每个粒子的配置
+      function Dot()
+      {
+      	this.color = new Color();//创建随机颜色
+      	//圆心坐标
+      	this.x = Math.round(Math.random()*wW);
+      	this.y = Math.round(Math.random()*wH);
+      	//速度(不同方向)
+      	this.vx = (Math.random()-0.5)*3;
+      	this.vy = (Math.random()-0.5)*3;
+      	//随机半径
+      	this.radius = Math.round(Math.random()*3);
+      }
+      //初始化
+      Dot.prototype.draw = function() {
+      	cvs.beginPath();
+      	cvs.fillStyle ='#c8171e';
+      	cvs.arc(this.x,this.y,this.radius,0,360,false);
+      	cvs.fill();
+      };
+      //创建粒子并放入数组
+      for(var i=0;i<Dots.n;i++)
+      {
+      	var dotObj = new Dot();
+      	Dots.array.push(dotObj);
+      	Dots.radiusArr.push(dotObj.radius);
+      	Dots.colorArr.push(dotObj.color);
+      }
+
+      //画出粒子
+      function drawDots()
+      {
+      	drawBg(cvs);
+      	for(var i=0;i<Dots.n;i++)
+	      {
+	      	Dots.array[i].draw();
+	      }
+      }
+      drawDots();
+      //移动粒子
+      function moveDots(){      	
+      	for(var i=0;i<Dots.n;i++)
+	      {
+	      	var dot = Dots.array[i];
+	      	//反弹判断
+	      	if(dot.x <0 || dot.x>wW)
+		      	{
+		      		dot.vx=-dot.vx;
+		      	}
+		    if(dot.y <0 || dot.y>wH)
+			    {
+			    	dot.vy=-dot.vy;
+			    }
+	      	dot.x += dot.vx*0.5;
+	      	dot.y += dot.vy*0.5;
+	      }
+      }
+     //混合颜色
+
+     //连线
+     function connect(ev)
+     {
+     	 function mixColor(dot1,dot2)
+	     {
+	     	var color1=dot1.color;
+	     	var color2=dot2.color;
+	     	var r1=dot1.radius;
+	     	var r2=dot2.radius;
+	     	var r=Math.floor((color1.r*r1+color2.r*r2)/(r1+r2));
+	     	var g=Math.floor((color1.g*r1+color2.g*r2)/(r1+r2));
+	     	var b=Math.floor((color1.b*r1+color2.b*r2)/(r1+r2));
+	     	return "rgba("+r+","+g+","+b+",1)"
+	     }
+     	for(var i=0;i<Dots.n;i++)
+     	{     		
+     		for(var j=0;j<Dots.n;j++)
+	     	{
+	     		var dot1 = Dots.array[i];
+	     		var dot2 = Dots.array[j];
+	     		var color=mixColor(dot1,dot2);
+	     		if(Math.abs(dot1.x-dot2.x)<Dots.minDis && Math.abs(dot1.y-dot2.y)<Dots.minDis)
+	     		{
+	     			cvs.lineWidth=0.3;
+	     			cvs.beginPath();
+	     			cvs.strokeStyle='#c8171e';
+	     			cvs.moveTo(dot1.x,dot1.y);
+	     			cvs.lineTo(dot2.x,dot2.y);
+	     			cvs.stroke();
+	     		}
+	     	}
+     	}
+      if(Dots.mouse){
+        var pX = Dots.mouse.x;
+        var pY = Dots.mouse.y;
+        for(let i = 0;i<Dots.n;i++){
+         var dist;
+         dist = Math.sqrt(Math.round(Dots.array[i].x - pX) * Math.round(Dots.array[i].x - pX) + 
+            Math.round(Dots.array[i].y - pY) * Math.round(Dots.array[i].y - pY))
+            // console.log(dist)
+         // 遇到鼠标吸附距离时加速，直接改变point的x，y值达到加速效果
+         if(dist > Dots.d_mouse && dist <= Dots.maxDis){
+          Dots.array[i].x = Dots.array[i].x + (pX - Dots.array[i].x) / (Math.random()*100+150);
+          Dots.array[i].y = Dots.array[i].y + (pY - Dots.array[i].y) / (Math.random()*100+150);
+         }
+         // if(dist <= Dots.maxDis){
+         //  cvs.lineWidth=0.5;
+         //  cvs.beginPath();
+         //  cvs.strokeStyle='#c8171e';
+         //  cvs.moveTo(Dots.array[i].x,Dots.array[i].y);
+         //  cvs.lineTo(pX,pY);
+         //  cvs.stroke();
+         // }
+        }
+      }
+
+     }
+     can.onmousemove=function(ev)
+     {
+     	// var ev=window.event || ev;
+     	// var pX=ev.pageX;
+     	// var pY=ev.pageY;     	
+     	// for(var i=0;i<Dots.n;i++)
+     	// {  
+     		
+	     // 	if(Math.abs(Dots.array[i].x-pX)<Dots.d_mouse && Math.abs(Dots.array[i].y-pY)<Dots.d_mouse)
+	     // 	{
+	     // 		var r=Dots.radiusArr[i]*2;
+	     // 		Dots.array[i].radius=r;
+	     // 	}
+	     // 	else{
+	     // 		Dots.array[i].radius=Dots.radiusArr[i];
+	     // 	}
+	     // }
+     }
+
+     body.onmousemove = function(e){
+      var event = e || window.event;
+      Dots.mouse = {
+        x: event.clientX,
+        y: event.clientY
+      }
+     }
+     document.onmouseleave = function(){
+      Dots.mouse = undefined;
+    }
+
+
+     //无限运动
+     function infinateDot()
+     {
+     	cvs.clearRect(0,0,wW,wH);
+     	moveDots();
+     	drawDots();
+     	connect();
+     	requestAnimationFrame(infinateDot)
+     }
+     infinateDot();
+    </script>
