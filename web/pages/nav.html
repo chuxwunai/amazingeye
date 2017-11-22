@@ -3,7 +3,7 @@
 .navbar-fixed-top固定在顶部  .navbar-fixed-bottom固定在底部 .navbar-static-top 类即可创建一个与页面等宽度的导航条，它会随着页面向下滚动而消失 .navbar-static-bottom
 .navbar-inverse 反色的导航条
 -->
-<nav id="myNav" class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top my-navbar">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <!-- <button> 小屏幕显示该按钮，data-target点击按钮显示的菜单  data-toggle="collapse"可折叠-->
@@ -99,4 +99,12 @@ function showView(view){
 } 
 showView(1);
 
+
+$(window).scroll(function() {
+	if ($(".navbar").offset().top > 50) {
+		$(".navbar-fixed-top").addClass("top-nav");
+	} else {
+		$(".navbar-fixed-top").removeClass("top-nav");
+	}
+});
 </script>
