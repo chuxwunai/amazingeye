@@ -23,7 +23,7 @@
     <!-- .navbar-collapse 导航条小屏幕折叠 -->
     <div class="collapse navbar-collapse" id="menuDiv">
       <!-- .nav是导航的基类，导航组件都依赖同一个 .nav 类 -->
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
       	<!-- .active 激活 -->
         <li id="firLink" onclick:="showView(1)" class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
         <li id="secLink" onclick:="showView(2)"><a href="#">Link</a></li>
@@ -59,16 +59,20 @@
       .navbar-form 将表单放置于 .navbar-form 之内可以呈现很好的垂直对齐，并在较窄的视口（viewport）中呈现折叠状态。 使用对齐选项可以规定其在导航条上出现的位置
       .navbar-left 向左对齐  .navbar-right 向右对齐
        -->
-     <form class="navbar-form navbar-left">
+      <!--  
+      <form class="navbar-form navbar-right">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form> 
+       -->
+      <!--  
       <ul class="nav navbar-nav navbar-right"> 
           <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
           <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> 
       </ul> 
+       -->
     </div>
 </nav>
 <script>

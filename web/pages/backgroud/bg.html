@@ -1,0 +1,24 @@
+<!-- canvas HTML5标签,Internet Explorer 9+, Firefox, Opera, Chrome 以及 Safari支持   -->
+<canvas id="bg"></canvas>
+<div style="width: 1000px; height: 1000px; background-color: gray;"></div>
+
+
+<script type="text/javascript">
+
+	//页面框架加载完成后执行脚本
+	$(function() {
+		var wW, wH;
+		
+		var cvs = $("#bg")[0];
+		cvs.width = wW = $(window).width();
+		cvs.height = wH = $(window).height();
+
+		var cxt = cvs.getContext("2d");
+		cxt.fillStyle = "#021120";
+		cxt.fillRect(0, 0, wW, wH);
+
+		//toDataURL: 画布转为包含图片的 data URI
+		//url=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABSQAAADpCAYAAAA...
+		$("body")[0].style.background = "url(" + cvs.toDataURL() + ")";
+	});
+</script>
